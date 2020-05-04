@@ -37,21 +37,25 @@ class FinderId(object):
             return "Это чо еще такое а? Id пришли"
 
 
-class FinderPage(object):
+class FinderTitle(object):
     """
     Выполняет поиск по плагинации
     """
 
-    def __init__(self, page, index):
-        self.page = page
-        self.index = index
+    def __init__(self, data):
+        self.data = data.split(', ')
+
+    def get_type(self):
+        pass
 
     def get_list_movie(self):
         """
         Возвращает фильм в соответствии с индексом page
         """
-        if self.page:
-            url = f'https://api.kinopoisk.cloud/movies/all/page/{self.page}/token/{API_TOKEN}'
+        type_movie = ''
+
+        if self.data:
+            url = f'https://api.kinopoisk.cloud/movies/all/page/1/token/{API_TOKEN}'
             re = requests.get(url)
             re = re.json()["movies"]
             movie_list = []
