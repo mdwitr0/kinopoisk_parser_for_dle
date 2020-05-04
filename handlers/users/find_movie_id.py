@@ -1,5 +1,3 @@
-import logging
-
 from aiogram.dispatcher.filters import Text
 from aiogram.types import Message
 from aiogram.dispatcher import FSMContext
@@ -20,10 +18,10 @@ async def keyboards(message: Message, state: FSMContext):
     """
     text = 'Введите ID кинопоиска'
     await message.answer(text=text)
-    await PageUpdate.json.set()
+    await PageUpdate.idkp.set()
 
 
-@dp.message_handler(state=PageUpdate.json)
+@dp.message_handler(state=PageUpdate.idkp)
 async def find_movie(message: Message, state: FSMContext):
     """
     Показывает результат поиска по ID, и выводит кнопки "Опубликовать" и "Добавить описание и опубликовать"

@@ -15,6 +15,13 @@ running = InlineKeyboardMarkup(inline_keyboard=[
     ]
 ])
 
+type_choice = InlineKeyboardMarkup(inline_keyboard=[
+    [
+        InlineKeyboardButton(text="Фильм 👈", callback_data="movie"),
+        InlineKeyboardButton(text="👉 Сериал", callback_data="tv_series"),
+    ]
+])
+
 
 def url_movies(url):
     url_movie = InlineKeyboardMarkup(inline_keyboard=[
