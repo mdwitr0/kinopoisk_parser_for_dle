@@ -69,8 +69,7 @@ class SendMovie(object):
 
     def run_sender(self):
         """
-
-        :return:
+        Определяет webdriwer и проходит авторизацию на сайте
         """
         options = Options()
         options.headless = True
