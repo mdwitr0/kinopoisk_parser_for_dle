@@ -1,8 +1,7 @@
-import os
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.firefox.options import Options
+# from selenium.webdriver.chrome.options import Options
 from config import URL_DLE_SITES, DLE_LOGIN, DLE_PASSWORD
 
 
@@ -72,8 +71,30 @@ class SendMovie(object):
         Определяет webdriwer и проходит авторизацию на сайте
         """
         options = Options()
+        # отключает отображение браузера
         options.headless = True
+
+        """
+        Если у вас нет браузера Firefox, но есть Chrome то нужно закоментировать строки:
+        
+        from selenium.webdriver.firefox.options import Options
         driver = webdriver.Firefox(firefox_options=options)
+        
+        А так же в импортах закоментировать 
+        Далее читайте следующий комментарий
+        """
+
+        driver = webdriver.Firefox(firefox_options=options)
+        # driver = webdriver.Chrome(options=options)
+
+        """
+        Раскоментировать строки:
+        
+        from selenium.webdriver.chrome.options import Options
+        driver = webdriver.Chrome(options=options)
+        """
+
+        # Переходит на страницу авторизации в админке
         driver.get(f'{URL_DLE_SITES}/admin.php')
         if check_exists_by_xpath(driver, "//input[@name='username']"):
             authorization(driver)

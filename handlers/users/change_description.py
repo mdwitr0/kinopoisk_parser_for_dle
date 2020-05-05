@@ -9,7 +9,7 @@ from loader import dp
 @dp.callback_query_handler(text_contains="add_text", state="*")
 async def run_sender(call: CallbackQuery, state: FSMContext):
     """
-    Получает новое описание для фильма
+    Вызывает состояние description и отправляет сообщение пользователю с просьбой прислать описание
     :param call: Передает данные из предыдущего хендлера
     :param state: получает состояние предыдущего
     :return:
@@ -24,19 +24,23 @@ async def run_sender(call: CallbackQuery, state: FSMContext):
 async def run_sender(message: Message, state: FSMContext):
     """
     Показывает результат поиска по ID, и выводит кнопки "Опубликовать" и "Добавить описание и опубликовать"
+    Так же получает состояние из предыдущего хендлера и записывает в него описание.
     :param message: Получает сообщение с ID
     :param state: получает состояние предыдущего хендлера
     :return:
     """
-    movie = await state.get_data()
+    # Запись описания в состояние description
     await state.update_data(description=message.text)
     await DataUpdate.description.set()
     await DataUpdate.next()
+    # Получает все состояния которые были записаны
     movie = await state.get_data()
+    # Получаем из состояния данные о фильме
     movie_data = movie['json']
+    # Парсим полученные данны и готовоим текст для отправки
     info = f'Фильм который вы искали: {movie_data["title"]} \r\nОписание: {movie["description"]} ' \
            f'\r\nТрейлер: {movie_data["trailer"]} \r\nПостер: {movie_data["poster"]}'
+    # Отправляем сообщение и запускаем процесс публикации фильма на сайте
     send_message = await message.answer(text=info, reply_markup=running)
     await send_message.edit_reply_markup(
         reply_markup=url_movies(SendMovie(movie['json'], movie['description']).run_sender()))
-    await DataUpdate.json.set()

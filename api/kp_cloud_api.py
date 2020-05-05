@@ -57,7 +57,7 @@ class FinderTitle(object):
                 re = re.json()["results"]
                 movie_list = [movie for movie in re]
             except:
-                return False
+                return None
             return movie_list
         else:
             return "Это чо еще такое а?"
