@@ -42,25 +42,22 @@ class FinderTitle(object):
     Выполняет поиск по плагинации
     """
 
-    def __init__(self, data):
-        self.data = data.split(', ')
-
-    def get_type(self):
-        pass
+    def __init__(self, type_movie, title):
+        self.type_movie = type_movie
+        self.title = title
 
     def get_list_movie(self):
         """
         Возвращает фильм в соответствии с индексом page
         """
-        type_movie = ''
-
-        if self.data:
-            url = f'https://api.kinopoisk.cloud/movies/all/page/1/token/{API_TOKEN}'
-            re = requests.get(url)
-            re = re.json()["movies"]
-            movie_list = []
-            for movie in re:
-                movie_list.append(movie["title"])
+        if self.title:
+            url = f'https://api.kinopoisk.cloud/{self.type_movie}/search/{self.title}/page/1/token/{API_TOKEN}'
+            try:
+                re = requests.get(url)
+                re = re.json()["results"]
+                movie_list = [movie for movie in re]
+            except:
+                return False
             return movie_list
         else:
             return "Это чо еще такое а?"

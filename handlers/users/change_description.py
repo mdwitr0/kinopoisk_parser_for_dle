@@ -1,7 +1,7 @@
 from aiogram.types import Message, CallbackQuery
 from aiogram.dispatcher import FSMContext
 from keyboards.inline.choice_buttons import url_movies, running
-from state.state import PageUpdate
+from state.state import DataUpdate
 from browser.send_movie import SendMovie
 from loader import dp
 
@@ -10,28 +10,28 @@ from loader import dp
 async def run_sender(call: CallbackQuery, state: FSMContext):
     """
     Получает новое описание для фильма
-    :param call: Ожидает описание фильма
-    :param state: записывает описание в состояние text
+    :param call: Передает данные из предыдущего хендлера
+    :param state: получает состояние предыдущего
     :return:
     """
     text = 'Введите новое описание фильма'
     await state.update_data(description=call.message.text)
     await call.message.edit_text(text=text)
-    await PageUpdate.description.set()
+    await DataUpdate.description.set()
 
 
-@dp.message_handler(state=PageUpdate.description)
+@dp.message_handler(state=DataUpdate.description)
 async def run_sender(message: Message, state: FSMContext):
     """
     Показывает результат поиска по ID, и выводит кнопки "Опубликовать" и "Добавить описание и опубликовать"
     :param message: Получает сообщение с ID
-    :param state: Сохраняет полученные данные о фильме в состояние json
+    :param state: получает состояние предыдущего хендлера
     :return:
     """
     movie = await state.get_data()
     await state.update_data(description=message.text)
-    await PageUpdate.description.set()
-    await PageUpdate.next()
+    await DataUpdate.description.set()
+    await DataUpdate.next()
     movie = await state.get_data()
     movie_data = movie['json']
     info = f'Фильм который вы искали: {movie_data["title"]} \r\nОписание: {movie["description"]} ' \
@@ -39,4 +39,4 @@ async def run_sender(message: Message, state: FSMContext):
     send_message = await message.answer(text=info, reply_markup=running)
     await send_message.edit_reply_markup(
         reply_markup=url_movies(SendMovie(movie['json'], movie['description']).run_sender()))
-    await PageUpdate.json.set()
+    await DataUpdate.json.set()

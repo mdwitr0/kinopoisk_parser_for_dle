@@ -6,4 +6,7 @@ from loader import dp
 
 @dp.message_handler(Command("start"), state="*")
 async def start(message: Message):
+    """
+    Отправлет пользователю кнопки
+    """
     await message.answer("Выберите действие", reply_markup=menu)
