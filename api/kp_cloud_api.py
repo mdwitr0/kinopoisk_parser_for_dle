@@ -39,7 +39,7 @@ class FinderId(object):
 
 class FinderTitle(object):
     """
-    Выполняет поиск по плагинации
+    Выполняет поиск по пагинации
     """
 
     def __init__(self, type_movie, title):
