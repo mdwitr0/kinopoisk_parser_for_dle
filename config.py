@@ -1,6 +1,9 @@
+# URL api кинопоиска
+API_URL = "https://cloud-api.kinopoisk.dev"
+
 # Токен бота в телеграме
 BOT_TOKEN = ""
-# Токен api кинопоиска получить можно тут - https://kinopoisk.cloud/
+# Токен api кинопоиска получить можно тут - https://kinopoisk.dev/
 API_TOKEN = ""
 
 """

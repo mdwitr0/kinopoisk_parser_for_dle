@@ -1,6 +1,6 @@
 import requests
 from browser.send_movie import SendMovie
-from config import API_TOKEN
+from config import API_TOKEN, API_URL
 
 
 class FinderId(object):
@@ -19,10 +19,10 @@ class FinderId(object):
 
         if self.id_kp.isdecimal():
             # запрос к базе фильмов
-            url = f'https://api.kinopoisk.cloud/movies/{self.id_kp}/token/{API_TOKEN}'
+            url = f'{API_URL}/movies/{self.id_kp}/token/{API_TOKEN}'
             re = requests.get(url)
             if re.status_code != 200:
-                url = f'https://api.kinopoisk.cloud/tv-series/{self.id_kp}/token/{API_TOKEN}'
+                url = f'{API_URL}/tv-series/{self.id_kp}/token/{API_TOKEN}'
                 re = requests.get(url)
                 if re.status_code != 200:
                     return "Это чо еще такое а? Id пришли"
@@ -51,7 +51,7 @@ class FinderTitle(object):
         Возвращает фильм в соответствии с индексом page
         """
         if self.title:
-            url = f'https://api.kinopoisk.cloud/{self.type_movie}/search/{self.title}/page/1/token/{API_TOKEN}'
+            url = f'{API_URL}/{self.type_movie}/search/{self.title}/page/1/token/{API_TOKEN}'
             try:
                 re = requests.get(url)
                 re = re.json()["results"]
